@@ -10,6 +10,7 @@ import com.pranavkapoorr.contactbook.model.Contact;
 @Repository
 public class ContactRepository implements ContactDao{
 	private static List<Contact> contacts;
+	private int id = 0;
 	
 	public ContactRepository() {
 		contacts = new ArrayList<Contact>();
@@ -21,6 +22,8 @@ public class ContactRepository implements ContactDao{
 	public String addContact(Contact contact) {
 		contact.setCreatedTime(getCurrentTimeStamp());//adding created time
 		boolean result = false;
+		contact.setId(id);
+		id++;
 		result = contacts.add(contact);
 		return !result?"Failed to Add":"Added Successfully!";
 	}

@@ -13,7 +13,6 @@ import com.pranavkapoorr.contactbook.model.Contact;
 public class ContactController {
 	@Autowired
 	ContactService service;
-	int id = 0;
 	
 	@RequestMapping(path = "/contacts",method = RequestMethod.GET)
 	public List<Contact> getContacts() {
@@ -26,19 +25,17 @@ public class ContactController {
 	}
 	
 	@RequestMapping(path = "/contact/{field}",method = RequestMethod.GET)
-	public List<Contact> getContactByFirstName(@PathVariable(value="field")String field) {
+	public List<Contact> getContactByOtherFields(@PathVariable(value="field")String field) {
 		return service.getContactByOtherFields(field);
 	}
 	
 	@RequestMapping(path = "/contact",method = RequestMethod.POST,consumes = "application/json")
 	public String addContact(@RequestBody(required = true) Contact contact) {
-		contact.setId(id);
-		id++;
 		return service.addContact(contact);
 	}
 	
-	@RequestMapping(path = "/contact",method = RequestMethod.DELETE,consumes = "application/json")
-	public String removeContact(@RequestBody(required = true) int contactId) {
+	@RequestMapping(path = "/contact/{contactId}",method = RequestMethod.DELETE,consumes = "application/json")
+	public String removeContact(@PathVariable(name = "contactId") int contactId) {
 		return service.removeContact(contactId);
 	}
 	
