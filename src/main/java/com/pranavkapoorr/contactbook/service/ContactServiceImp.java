@@ -1,10 +1,11 @@
-package com.pranavkapoorr.contactbook.db;
+package com.pranavkapoorr.contactbook.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pranavkapoorr.contactbook.db.ContactDao;
 import com.pranavkapoorr.contactbook.model.Contact;
 
 @Service
@@ -23,8 +24,8 @@ public class ContactServiceImp implements ContactService{
 	}
 
 	@Override
-	public List<Contact> listContacts() {
-		return contactDao.listContacts();
+	public List<Contact> listContacts(String sorting) {
+		return contactDao.listContacts(sorting);
 	}
 
 	@Override
@@ -38,8 +39,8 @@ public class ContactServiceImp implements ContactService{
 	}
 
 	@Override
-	public List<Contact> getContactByOtherFields(String field) {
-		return contactDao.getContactByOtherFields(field);
+	public List<Contact> getContactByOtherFields(String field, String sortField, String sort) {
+		return contactDao.getContactByOtherFields(field,sortField,sort);
 	}
 
 

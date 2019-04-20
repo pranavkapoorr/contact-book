@@ -10,8 +10,8 @@ import com.pranavkapoorr.contactbook.model.Contact;
 public interface ContactDao {
 	public String addContact(Contact contact);
 	public String updateContact(Contact contact);
-	public List<Contact> listContacts();
+	public List<Contact> listContacts(String sort);
 	public Contact getContactById(int contactId);
-	public List<Contact> getContactByOtherFields(String field);
+	public List<Contact> getContactByOtherFields(String field,String sortField,String sorting);
 	public String removeContact(int contactId);
 }

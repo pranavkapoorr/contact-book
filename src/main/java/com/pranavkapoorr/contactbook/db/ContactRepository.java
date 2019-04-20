@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 import com.pranavkapoorr.contactbook.model.Contact;
+import com.pranavkapoorr.contactbook.utilities.ContactUtils;
 
 @Repository
 public class ContactRepository implements ContactDao{
@@ -43,8 +44,14 @@ public class ContactRepository implements ContactDao{
 	}
 
 	@Override
-	public List<Contact> listContacts() {
-		return contacts;
+	public List<Contact> listContacts(String sort) {
+		List<Contact> tempList = contacts;
+		if(sort.equalsIgnoreCase("asc")) {
+			Collections.sort(tempList,ContactUtils.firstNameComparatorAsc);
+		}else if(sort.equalsIgnoreCase("desc")) {
+			Collections.sort(tempList,ContactUtils.firstNameComparatorDesc);
+		}
+		return tempList;
 	}
 
 	@Override
@@ -67,14 +74,33 @@ public class ContactRepository implements ContactDao{
 	}
 
 	@Override
-	public List<Contact> getContactByOtherFields(String field) {
-		return contacts.stream()
+	public List<Contact> getContactByOtherFields(String field, String sortField,String sort) {
+		List<Contact> tempList = contacts.stream()
 				.filter(c->
 				(c.getFirstName().toLowerCase().contains(field.toLowerCase()))//firstname
 				||(c.getLastName().toLowerCase().contains(field.toLowerCase()))//lastname
 				||(c.getCellPhone().contains(field))//cellphone
 				||(c.getHomePhone().contains(field)))//homephone
 				.collect(Collectors.toList());
+		//sorting if both fields are populated by request
+		if(sortField.equalsIgnoreCase("firstname") && sort.equalsIgnoreCase("asc")) {
+			Collections.sort(tempList,ContactUtils.firstNameComparatorAsc);
+		}else if(sortField.equalsIgnoreCase("firstname") && sort.equalsIgnoreCase("desc")) {
+			Collections.sort(tempList,ContactUtils.firstNameComparatorDesc);
+		}else if(sortField.equalsIgnoreCase("lastname") && sort.equalsIgnoreCase("asc")) {
+			Collections.sort(tempList,ContactUtils.lastNameComparatorAsc);
+		}else if(sortField.equalsIgnoreCase("lastname") && sort.equalsIgnoreCase("desc")) {
+			Collections.sort(tempList,ContactUtils.lastNameComparatorDesc);
+		}else if(sortField.equalsIgnoreCase("cellphone") && sort.equalsIgnoreCase("asc")) {
+			Collections.sort(tempList,ContactUtils.cellPhoneComparatorAsc);
+		}else if(sortField.equalsIgnoreCase("cellphone") && sort.equalsIgnoreCase("desc")) {
+			Collections.sort(tempList,ContactUtils.cellPhoneComparatorDesc);
+		}else if(sortField.equalsIgnoreCase("homephone") && sort.equalsIgnoreCase("asc")) {
+			Collections.sort(tempList,ContactUtils.homePhoneComparatorAsc);
+		}else if(sortField.equalsIgnoreCase("homephone") && sort.equalsIgnoreCase("desc")) {
+			Collections.sort(tempList,ContactUtils.homePhoneComparatorDesc);
+		}
+		return tempList;
 	}
 
 }
