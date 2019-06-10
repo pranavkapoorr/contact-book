@@ -2,6 +2,8 @@ package com.pranavkapoorr.contactbook.controller;
 
 import static org.junit.Assert.assertEquals;
 import java.util.*;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -26,8 +28,14 @@ public class ContactControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private ContactService service;
-
+	private static ContactService service;
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("initialisation......");
+		service.addContact(new Contact(0,"Pranav","Kapoor","6476337891","7488706094","Clark Blvd"));
+		service.addContact(new Contact(0,"Aarav","Kapoor","6479937891","9417792242","Clark Blvd"));
+	}
 	Contact mockContact = new Contact(1,"Pranav","Kapoor","6476337891","6479937891","1665 Clark Blvd");
 
 	@Test
@@ -224,6 +232,17 @@ public class ContactControllerTest {
 		assertEquals(3,list.get(0).getId());
 		assertEquals(4,list.get(list.size()-1).getId());
 
+	}
+	
+	
+
+	@Test
+	public void testAdding() {
+		System.out.println(service.listContacts("asc").get(0));
+		List<Contact> expected = new ArrayList<>();
+		expected.add(new Contact(1,"Pranav","Kapoor","6476337891","7488706094","Clark Blvd"));
+		expected.add(new Contact(2,"Aarav","Kapoor","6479937891","9417792242","Clark Blvd"));
+		assertEquals("compare get",expected.get(0), service.listContacts("asc").get(0));
 	}
 
 }
